@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assessor.AI</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div>
+        <p class="eyebrow">ASSISTENTE PESSOAL</p>
+        <h1>Assessor<span>.AI</span></h1>
+        <p class="subtitle">Financas, agenda e memoria de longo prazo em uma unica conversa.</p>
+      </div>
+
+      <section class="status-card" aria-label="Status da sessao">
+        <div class="status-row">
+          <span class="status-dot" id="statusDot"></span>
+          <strong id="sessionStatus">Iniciando...</strong>
+        </div>
+        <small id="sessionId">Sessao ainda nao criada</small>
+      </section>
+
+      <div class="feature-list">
+        <div><strong>PostgreSQL</strong><span>financas e agenda</span></div>
+        <div><strong>MongoDB</strong><span>conversas completas</span></div>
+        <div><strong>Qdrant</strong><span>resumos semanticos</span></div>
+        <div><strong>Guardrail</strong><span>PII anonima antes do LLM</span></div>
+      </div>
+
+      <div class="sidebar-actions">
+        <button class="secondary" id="newSessionButton" type="button">Nova sessao</button>
+        <button class="danger" id="closeSessionButton" type="button">Encerrar e resumir</button>
+        <a href="/docs" target="_blank" rel="noreferrer">Abrir Swagger /docs</a>
+      </div>
+    </aside>
+
+    <section class="chat-panel">
+      <header class="chat-header">
+        <div>
+          <p class="eyebrow">CONVERSA</p>
+          <h2>Como posso ajudar hoje?</h2>
+        </div>
+        <a class="docs-link" href="/docs" target="_blank" rel="noreferrer">API /docs</a>
+      </header>
+
+      <div class="messages" id="messages" aria-live="polite">
+        <article class="message assistant">
+          <div class="avatar">AI</div>
+          <div class="bubble">
+            <p>Posso registrar e consultar financas, criar compromissos e recuperar informacoes relevantes de conversas anteriores.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="agent-trace" id="agentTrace" hidden></div>
+
+      <form class="composer" id="chatForm">
+        <label for="question" class="sr-only">Mensagem</label>
+        <textarea id="question" rows="1" maxlength="8000" placeholder="Ex.: gastei 42 reais no mercado" required></textarea>
+        <button id="sendButton" type="submit">Enviar</button>
+      </form>
+      <p class="composer-help">Enter envia. Shift + Enter cria uma nova linha.</p>
+    </section>
+  </main>
+
+  <dialog id="summaryDialog">
+    <div class="dialog-content">
+      <p class="eyebrow">MEMORIA SALVA</p>
+      <h3>Resumo da sessao</h3>
+      <pre id="summaryText"></pre>
+      <div class="dialog-actions">
+        <button id="dialogNewSession" type="button">Comecar nova sessao</button>
+        <button id="dialogClose" class="secondary" type="button">Fechar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
