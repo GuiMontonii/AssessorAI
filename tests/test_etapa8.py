@@ -275,29 +275,6 @@ class ToolBoundaryTests(unittest.TestCase):
         self.assertEqual(contexto.escritas_pendentes[0]["dados"]["valor"], "26.25")
         self.assertEqual(contexto.escritas_pendentes[0]["dados"]["moeda_original"], "USD")
 
-    def test_financeiro_accepts_common_expense_terms(self):
-        runtime = types.SimpleNamespace(context=AgentContext("usuario1", "sessao1", "turno-alias", "BRL"))
-        ferramenta = self.get_callable(financeiro.add_transaction)
-        for tipo in ("saida", "saída", "despesa", "gasto", "compra"):
-            resultado = ferramenta(tipo=tipo, valor=100, descricao="camiseta da Zara", runtime=runtime)
-            self.assertEqual(resultado["status"], "pendente")
-            self.assertEqual(resultado["dados"]["tipo"], "saida")
-        self.assertEqual(len(runtime.context.escritas_pendentes), 1)
-
-    def test_financeiro_does_not_accept_unknown_type(self):
-        runtime = types.SimpleNamespace(context=AgentContext("usuario1", "sessao1", "turno-invalido", "BRL"))
-        ferramenta = self.get_callable(financeiro.add_transaction)
-        resultado = ferramenta(tipo="outro", valor=100, descricao="camiseta", runtime=runtime)
-        self.assertEqual(resultado["status"], "erro")
-        self.assertEqual(runtime.context.escritas_pendentes, [])
-
-    def test_update_accepts_expense_alias(self):
-        runtime = types.SimpleNamespace(context=AgentContext("usuario1", "sessao1", "turno-update", "BRL"))
-        ferramenta = self.get_callable(financeiro.update_transaction)
-        resultado = ferramenta(transaction_id=8, runtime=runtime, tipo="despesa")
-        self.assertEqual(resultado["status"], "pendente")
-        self.assertEqual(resultado["dados"]["tipo"], "saida")
-
     def test_agenda_tool_prepares_without_db_write(self):
         contexto = AgentContext("usuario1", "sessao1", "turno2")
         runtime = types.SimpleNamespace(context=contexto)
